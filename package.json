@@ -1,0 +1,14 @@
+{
+  "name": "graphql-backend",
+  "version": "1.0.0",
+  "description": "Starter kit for GraphQL + NodeJS backend",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ricardo Merino - @masmerinosv",
+  "license": "ISC",
+  "dependencies": {
+    "graphql-yoga": "^1.16.7"
+  }
+}
