@@ -1,1 +1,1 @@
-# graphql-things
+# Graphql backend
