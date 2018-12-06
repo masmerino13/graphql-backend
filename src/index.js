@@ -1,23 +1,10 @@
 const { GraphQLServer } = require('graphql-yoga');
 const _ = require('lodash');
 
-const links = [
-    {
-        id: 1,
-        url: 'www.google.com',
-        description: 'Fullstack developer link'
-    },
-    {
-        id: 2,
-        url: 'www.another.com',
-        description: 'Another link'
-    }
-];
-
 const resolvers = {
     Query: {
         info: () => 'Works babies!',
-        feed: () => links,
+        feed: (root, args, context, info) => context.db.query.links({}, info),
         link: (root, args) => {
             const { id } = args;
             return _.find(links, i => i.id == id);
@@ -25,17 +12,7 @@ const resolvers = {
     },
     Mutation: {
         createLink: (root, args) => {
-            const { description, url } = args,
-                id = links.length + 1,
-                link = {
-                    id,
-                    description,
-                    url
-                };
-
-            links.push(link);
-
-            return link;
+            return args;
         },
         updateLink: (root, args) => {
             const { id, url, description } = args;
