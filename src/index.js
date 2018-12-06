@@ -1,4 +1,5 @@
 const { GraphQLServer } = require('graphql-yoga');
+const _ = require('lodash');
 
 const links = [
     {
@@ -17,8 +18,38 @@ const resolvers = {
     Query: {
         info: () => 'Works babies!',
         feed: () => links,
-        link: (id) => {
-            links.filter(link => link.id === id)
+        link: (root, args) => {
+            const { id } = args;
+            return _.find(links, i => i.id == id);
+        }
+    },
+    Mutation: {
+        createLink: (root, args) => {
+            const { description, url } = args,
+                id = links.length + 1,
+                link = {
+                    id,
+                    description,
+                    url
+                };
+
+            links.push(link);
+
+            return link;
+        },
+        updateLink: (root, args) => {
+            const { id, url, description } = args;
+
+            let link = links.find(i => {
+                return i.id == id;
+            });
+
+            link.url = url;
+            link.description = description;
+        },
+        deleteLink: (root, args) => {
+            const { id } = args;
+            
         }
     }
 }
