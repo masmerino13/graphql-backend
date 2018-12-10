@@ -3,13 +3,15 @@ const { Prisma } = require('prisma-binding');
 const Query = require('./resolvers/Query');
 const Mutation = require('./resolvers/Mutation');
 const AuthPayload = require('./resolvers/AuthPayload');
+const Subscription = require('./resolvers/Subscription');
 
 const server = new GraphQLServer({
     typeDefs: './src/schema.graphql',
     resolvers: {
         Query,
         Mutation,
-        AuthPayload
+        AuthPayload,
+        Subscription
     },
     context: req => ({
         ...req,
