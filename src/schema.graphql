@@ -1,7 +1,10 @@
+# import Link from "./generated/prisma.graphql"
+
 type Query {
     info: String!
     feed: [Link!]!
     link(id: ID!): Link
+    users: [User!]!
 }
 
 type Mutation {
@@ -16,10 +19,21 @@ type Mutation {
 
     # Delete link
     deleteLink(id: ID!): Link
+
+    ##### User
+    signup(email: String!, password: String!): AuthPayload
+    login(email: String!, password: String!): AuthPayload
+    deleteUser(id: ID!): User
 }
 
-type Link {
-    id: ID!
-    description: String!
-    url: String!
+type AuthPayload {
+  token: String
+  user: User
+}
+
+type User {
+  id: ID!
+  name: String!
+  email: String!
+  links: [Link!]!
 }

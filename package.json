@@ -10,7 +10,10 @@
   "author": "Ricardo Merino - @masmerinosv",
   "license": "ISC",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "graphql-yoga": "^1.16.7",
-    "lodash": "^4.17.11"
+    "jsonwebtoken": "^8.4.0",
+    "lodash": "^4.17.11",
+    "prisma-binding": "^2.2.8"
   }
 }

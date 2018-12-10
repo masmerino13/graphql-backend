@@ -1,39 +1,25 @@
 const { GraphQLServer } = require('graphql-yoga');
-const _ = require('lodash');
-
-const resolvers = {
-    Query: {
-        info: () => 'Works babies!',
-        feed: (root, args, context, info) => context.db.query.links({}, info),
-        link: (root, args) => {
-            const { id } = args;
-            return _.find(links, i => i.id == id);
-        }
-    },
-    Mutation: {
-        createLink: (root, args) => {
-            return args;
-        },
-        updateLink: (root, args) => {
-            const { id, url, description } = args;
-
-            let link = links.find(i => {
-                return i.id == id;
-            });
-
-            link.url = url;
-            link.description = description;
-        },
-        deleteLink: (root, args) => {
-            const { id } = args;
-            
-        }
-    }
-}
+const { Prisma } = require('prisma-binding');
+const Query = require('./resolvers/Query');
+const Mutation = require('./resolvers/Mutation');
+const AuthPayload = require('./resolvers/AuthPayload');
 
 const server = new GraphQLServer({
     typeDefs: './src/schema.graphql',
-    resolvers
+    resolvers: {
+        Query,
+        Mutation,
+        AuthPayload
+    },
+    context: req => ({
+        ...req,
+        db: new Prisma({
+            typeDefs: 'src/generated/prisma.graphql',
+            endpoint: 'https://eu1.prisma.sh/ricardo-merino-98ea87/database/dev',
+            secret: 'mysecret123',
+            debug: true
+        })
+    })
 });
 const port = 7777;
 
