@@ -1,12 +1,222 @@
 # source: https://eu1.prisma.sh/ricardo-merino-98ea87/database/dev
-# timestamp: Sun Dec 09 2018 17:07:56 GMT-0600 (GMT-06:00)
+# timestamp: Mon Dec 17 2018 11:25:46 GMT-0600 (Central Standard Time)
+
+type AggregateAlert {
+  count: Int!
+}
 
 type AggregateLink {
   count: Int!
 }
 
+type AggregateMedicine {
+  count: Int!
+}
+
 type AggregateUser {
   count: Int!
+}
+
+type Alert implements Node {
+  id: ID!
+  medicine: Medicine
+}
+
+"""A connection to a list of items."""
+type AlertConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [AlertEdge]!
+  aggregate: AggregateAlert!
+}
+
+input AlertCreateInput {
+  medicine: MedicineCreateOneWithoutAlertsInput
+}
+
+input AlertCreateManyWithoutMedicineInput {
+  connect: [AlertWhereUniqueInput!]
+}
+
+"""An edge in a connection."""
+type AlertEdge {
+  """The item at the end of the edge."""
+  node: Alert!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum AlertOrderByInput {
+  id_ASC
+  id_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type AlertPreviousValues {
+  id: ID!
+}
+
+input AlertScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [AlertScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [AlertScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [AlertScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+}
+
+type AlertSubscriptionPayload {
+  mutation: MutationType!
+  node: Alert
+  updatedFields: [String!]
+  previousValues: AlertPreviousValues
+}
+
+input AlertSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [AlertSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [AlertSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [AlertSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: AlertWhereInput
+}
+
+input AlertUpdateInput {
+  medicine: MedicineUpdateOneWithoutAlertsInput
+}
+
+input AlertUpdateManyWithoutMedicineInput {
+  connect: [AlertWhereUniqueInput!]
+  disconnect: [AlertWhereUniqueInput!]
+  delete: [AlertWhereUniqueInput!]
+  deleteMany: [AlertScalarWhereInput!]
+}
+
+input AlertWhereInput {
+  """Logical AND on all given filters."""
+  AND: [AlertWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [AlertWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [AlertWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  medicine: MedicineWhereInput
+}
+
+input AlertWhereUniqueInput {
+  id: ID
 }
 
 type BatchPayload {
@@ -483,19 +693,392 @@ Long can represent values between -(2^63) and 2^63 - 1.
 """
 scalar Long
 
+type Medicine implements Node {
+  id: ID!
+  name: String!
+  createdBy: User!
+  alerts(where: AlertWhereInput, orderBy: AlertOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Alert!]
+}
+
+"""A connection to a list of items."""
+type MedicineConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [MedicineEdge]!
+  aggregate: AggregateMedicine!
+}
+
+input MedicineCreateInput {
+  name: String!
+  createdBy: UserCreateOneWithoutMedicinesInput!
+  alerts: AlertCreateManyWithoutMedicineInput
+}
+
+input MedicineCreateManyWithoutCreatedByInput {
+  create: [MedicineCreateWithoutCreatedByInput!]
+  connect: [MedicineWhereUniqueInput!]
+}
+
+input MedicineCreateOneWithoutAlertsInput {
+  create: MedicineCreateWithoutAlertsInput
+  connect: MedicineWhereUniqueInput
+}
+
+input MedicineCreateWithoutAlertsInput {
+  name: String!
+  createdBy: UserCreateOneWithoutMedicinesInput!
+}
+
+input MedicineCreateWithoutCreatedByInput {
+  name: String!
+  alerts: AlertCreateManyWithoutMedicineInput
+}
+
+"""An edge in a connection."""
+type MedicineEdge {
+  """The item at the end of the edge."""
+  node: Medicine!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum MedicineOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+  createdAt_ASC
+  createdAt_DESC
+}
+
+type MedicinePreviousValues {
+  id: ID!
+  name: String!
+}
+
+input MedicineScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [MedicineScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [MedicineScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [MedicineScalarWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
+}
+
+type MedicineSubscriptionPayload {
+  mutation: MutationType!
+  node: Medicine
+  updatedFields: [String!]
+  previousValues: MedicinePreviousValues
+}
+
+input MedicineSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [MedicineSubscriptionWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [MedicineSubscriptionWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [MedicineSubscriptionWhereInput!]
+
+  """
+  The subscription event gets dispatched when it's listed in mutation_in
+  """
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: MedicineWhereInput
+}
+
+input MedicineUpdateInput {
+  name: String
+  createdBy: UserUpdateOneRequiredWithoutMedicinesInput
+  alerts: AlertUpdateManyWithoutMedicineInput
+}
+
+input MedicineUpdateManyDataInput {
+  name: String
+}
+
+input MedicineUpdateManyMutationInput {
+  name: String
+}
+
+input MedicineUpdateManyWithoutCreatedByInput {
+  create: [MedicineCreateWithoutCreatedByInput!]
+  connect: [MedicineWhereUniqueInput!]
+  disconnect: [MedicineWhereUniqueInput!]
+  delete: [MedicineWhereUniqueInput!]
+  update: [MedicineUpdateWithWhereUniqueWithoutCreatedByInput!]
+  updateMany: [MedicineUpdateManyWithWhereNestedInput!]
+  deleteMany: [MedicineScalarWhereInput!]
+  upsert: [MedicineUpsertWithWhereUniqueWithoutCreatedByInput!]
+}
+
+input MedicineUpdateManyWithWhereNestedInput {
+  where: MedicineScalarWhereInput!
+  data: MedicineUpdateManyDataInput!
+}
+
+input MedicineUpdateOneWithoutAlertsInput {
+  create: MedicineCreateWithoutAlertsInput
+  connect: MedicineWhereUniqueInput
+  disconnect: Boolean
+  delete: Boolean
+  update: MedicineUpdateWithoutAlertsDataInput
+  upsert: MedicineUpsertWithoutAlertsInput
+}
+
+input MedicineUpdateWithoutAlertsDataInput {
+  name: String
+  createdBy: UserUpdateOneRequiredWithoutMedicinesInput
+}
+
+input MedicineUpdateWithoutCreatedByDataInput {
+  name: String
+  alerts: AlertUpdateManyWithoutMedicineInput
+}
+
+input MedicineUpdateWithWhereUniqueWithoutCreatedByInput {
+  where: MedicineWhereUniqueInput!
+  data: MedicineUpdateWithoutCreatedByDataInput!
+}
+
+input MedicineUpsertWithoutAlertsInput {
+  update: MedicineUpdateWithoutAlertsDataInput!
+  create: MedicineCreateWithoutAlertsInput!
+}
+
+input MedicineUpsertWithWhereUniqueWithoutCreatedByInput {
+  where: MedicineWhereUniqueInput!
+  update: MedicineUpdateWithoutCreatedByDataInput!
+  create: MedicineCreateWithoutCreatedByInput!
+}
+
+input MedicineWhereInput {
+  """Logical AND on all given filters."""
+  AND: [MedicineWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [MedicineWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [MedicineWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
+  createdBy: UserWhereInput
+  alerts_every: AlertWhereInput
+  alerts_some: AlertWhereInput
+  alerts_none: AlertWhereInput
+}
+
+input MedicineWhereUniqueInput {
+  id: ID
+}
+
 type Mutation {
   createLink(data: LinkCreateInput!): Link!
   createUser(data: UserCreateInput!): User!
+  createMedicine(data: MedicineCreateInput!): Medicine!
+  createAlert(data: AlertCreateInput!): Alert!
   updateLink(data: LinkUpdateInput!, where: LinkWhereUniqueInput!): Link
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
+  updateMedicine(data: MedicineUpdateInput!, where: MedicineWhereUniqueInput!): Medicine
+  updateAlert(data: AlertUpdateInput!, where: AlertWhereUniqueInput!): Alert
   deleteLink(where: LinkWhereUniqueInput!): Link
   deleteUser(where: UserWhereUniqueInput!): User
+  deleteMedicine(where: MedicineWhereUniqueInput!): Medicine
+  deleteAlert(where: AlertWhereUniqueInput!): Alert
   upsertLink(where: LinkWhereUniqueInput!, create: LinkCreateInput!, update: LinkUpdateInput!): Link!
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
+  upsertMedicine(where: MedicineWhereUniqueInput!, create: MedicineCreateInput!, update: MedicineUpdateInput!): Medicine!
+  upsertAlert(where: AlertWhereUniqueInput!, create: AlertCreateInput!, update: AlertUpdateInput!): Alert!
   updateManyLinks(data: LinkUpdateManyMutationInput!, where: LinkWhereInput): BatchPayload!
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
+  updateManyMedicines(data: MedicineUpdateManyMutationInput!, where: MedicineWhereInput): BatchPayload!
   deleteManyLinks(where: LinkWhereInput): BatchPayload!
   deleteManyUsers(where: UserWhereInput): BatchPayload!
+  deleteManyMedicines(where: MedicineWhereInput): BatchPayload!
+  deleteManyAlerts(where: AlertWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -528,10 +1111,16 @@ type PageInfo {
 type Query {
   links(where: LinkWhereInput, orderBy: LinkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Link]!
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
+  medicines(where: MedicineWhereInput, orderBy: MedicineOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Medicine]!
+  alerts(where: AlertWhereInput, orderBy: AlertOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Alert]!
   link(where: LinkWhereUniqueInput!): Link
   user(where: UserWhereUniqueInput!): User
+  medicine(where: MedicineWhereUniqueInput!): Medicine
+  alert(where: AlertWhereUniqueInput!): Alert
   linksConnection(where: LinkWhereInput, orderBy: LinkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): LinkConnection!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
+  medicinesConnection(where: MedicineWhereInput, orderBy: MedicineOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): MedicineConnection!
+  alertsConnection(where: AlertWhereInput, orderBy: AlertOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): AlertConnection!
 
   """Fetches an object given its ID"""
   node(
@@ -543,6 +1132,8 @@ type Query {
 type Subscription {
   link(where: LinkSubscriptionWhereInput): LinkSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+  medicine(where: MedicineSubscriptionWhereInput): MedicineSubscriptionPayload
+  alert(where: AlertSubscriptionWhereInput): AlertSubscriptionPayload
 }
 
 type User implements Node {
@@ -551,6 +1142,7 @@ type User implements Node {
   email: String!
   password: String!
   links(where: LinkWhereInput, orderBy: LinkOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Link!]
+  medicines(where: MedicineWhereInput, orderBy: MedicineOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Medicine!]
 }
 
 """A connection to a list of items."""
@@ -568,6 +1160,7 @@ input UserCreateInput {
   email: String!
   password: String!
   links: LinkCreateManyWithoutCreatedByInput
+  medicines: MedicineCreateManyWithoutCreatedByInput
 }
 
 input UserCreateOneWithoutLinksInput {
@@ -575,10 +1168,23 @@ input UserCreateOneWithoutLinksInput {
   connect: UserWhereUniqueInput
 }
 
+input UserCreateOneWithoutMedicinesInput {
+  create: UserCreateWithoutMedicinesInput
+  connect: UserWhereUniqueInput
+}
+
 input UserCreateWithoutLinksInput {
   name: String
   email: String!
   password: String!
+  medicines: MedicineCreateManyWithoutCreatedByInput
+}
+
+input UserCreateWithoutMedicinesInput {
+  name: String
+  email: String!
+  password: String!
+  links: LinkCreateManyWithoutCreatedByInput
 }
 
 """An edge in a connection."""
@@ -656,12 +1262,20 @@ input UserUpdateInput {
   email: String
   password: String
   links: LinkUpdateManyWithoutCreatedByInput
+  medicines: MedicineUpdateManyWithoutCreatedByInput
 }
 
 input UserUpdateManyMutationInput {
   name: String
   email: String
   password: String
+}
+
+input UserUpdateOneRequiredWithoutMedicinesInput {
+  create: UserCreateWithoutMedicinesInput
+  connect: UserWhereUniqueInput
+  update: UserUpdateWithoutMedicinesDataInput
+  upsert: UserUpsertWithoutMedicinesInput
 }
 
 input UserUpdateOneWithoutLinksInput {
@@ -677,11 +1291,24 @@ input UserUpdateWithoutLinksDataInput {
   name: String
   email: String
   password: String
+  medicines: MedicineUpdateManyWithoutCreatedByInput
+}
+
+input UserUpdateWithoutMedicinesDataInput {
+  name: String
+  email: String
+  password: String
+  links: LinkUpdateManyWithoutCreatedByInput
 }
 
 input UserUpsertWithoutLinksInput {
   update: UserUpdateWithoutLinksDataInput!
   create: UserCreateWithoutLinksInput!
+}
+
+input UserUpsertWithoutMedicinesInput {
+  update: UserUpdateWithoutMedicinesDataInput!
+  create: UserCreateWithoutMedicinesInput!
 }
 
 input UserWhereInput {
@@ -856,6 +1483,9 @@ input UserWhereInput {
   links_every: LinkWhereInput
   links_some: LinkWhereInput
   links_none: LinkWhereInput
+  medicines_every: MedicineWhereInput
+  medicines_some: MedicineWhereInput
+  medicines_none: MedicineWhereInput
 }
 
 input UserWhereUniqueInput {
