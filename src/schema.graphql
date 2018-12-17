@@ -5,6 +5,7 @@ type Query {
     feed: [Link!]!
     link(id: ID!): Link
     users: [User!]!
+    me: User
 }
 
 type Mutation {

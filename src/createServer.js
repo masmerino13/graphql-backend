@@ -14,6 +14,9 @@ function createServer() {
         AuthPayload,
         Subscription
     },
+    resolverValidationOptions: {
+      requireResolversForResolveType: false,
+    },
     context: req => ({ ...req, db })
   });
 }

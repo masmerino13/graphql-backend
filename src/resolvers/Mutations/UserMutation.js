@@ -1,6 +1,5 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { APP_SECRET } = require('../../utils');
 
 const signup = async (root, args, context, info) => {
   const password = await bcrypt.hash(args.password, 10);
@@ -8,7 +7,7 @@ const signup = async (root, args, context, info) => {
     data: { ...args, password },
   }, `{ id }`);
 
-  const token = jwt.sign({ userId: user.id }, APP_SECRET)
+  const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET)
 
   return {
     token,
@@ -27,7 +26,12 @@ const login = async (root, args, context, info) => {
     throw new Error('Invalid password')
   }
 
-  const token = jwt.sign({ userId: user.id }, APP_SECRET)
+  const token = jwt.sign({ userId: user.id }, process.env.APP_SECRET)
+
+  context.response.cookie('token', token, {
+    httpOnly: true,
+    maxAge: 1000 * 60 * 60 * 24 * 365,
+  });
 
   return {
     token,
